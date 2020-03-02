@@ -1,12 +1,12 @@
-class Client {
-  final String id;
+class Cliente {
+  final int id;
   final String nombre;
  final String email;
 
-  Client({this.id, this.nombre,this.email});
+  Cliente({this.id, this.nombre,this.email});
 
-  static fromJson(dynamic json) {
-    return Client(
+  static fromJson(Map<dynamic, dynamic> json) {
+    return Cliente(
       id: json['id'],
       nombre: json['nombre'],
       email: json['email'],

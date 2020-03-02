@@ -1,5 +1,5 @@
 class User{
-  final String id;
+  final int id;
   final String accessToken;
 
   User({this.id, this.accessToken});

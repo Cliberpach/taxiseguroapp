@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gpsadmin/models/client.dart';
 
 class ClientViewModel extends ChangeNotifier {
-  Client _client;
+  Cliente _client;
 
 
-  Client get client => _client;
+  Cliente get client => _client;
 
-  setclient(Client _c) {
+  setclient(Cliente _c) {
     _client = _c;
     notifyListeners();
   }

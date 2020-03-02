@@ -3,7 +3,6 @@ import 'package:gpsadmin/models/client.dart';
 
 import 'package:gpsadmin/viewmodels/client_view_model.dart';
 import 'package:provider/provider.dart';
-
 import 'package:flutter/material.dart';
 
 
@@ -12,9 +11,10 @@ class MenuLateral extends StatelessWidget {
   Widget build(BuildContext context) {
    
    
-    final Client client = Provider.of<ClientViewModel>(context).client;
+    //final Cliente cliente =Provider.of<ClientViewModel>(context).client;
+    Cliente cliente=Cliente();
    //aqui vamos allamar los datos del usuario
-   
+    print("${cliente.nombre}");
     ///aqui yermina
   
     
@@ -24,8 +24,8 @@ class MenuLateral extends StatelessWidget {
         
         children: <Widget>[
         new UserAccountsDrawerHeader(
-            accountName: Text("${client.nombre}"),
-            accountEmail:Text("${client.email}"),
+            accountName: Text("${cliente.nombre}"),
+            accountEmail:Text("${cliente.email}"),
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: new AssetImage("assets/images/ico.png")
