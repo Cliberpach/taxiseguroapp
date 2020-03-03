@@ -1,14 +1,14 @@
 class Cliente {
   final int id;
-  final String nombre;
+  final String name;
  final String email;
 
-  Cliente({this.id, this.nombre,this.email});
+  Cliente({this.id, this.name,this.email});
 
   static fromJson(Map<dynamic, dynamic> json) {
     return Cliente(
       id: json['id'],
-      nombre: json['nombre'],
+      name: json['name'],
       email: json['email'],
     );
   }

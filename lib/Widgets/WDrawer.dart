@@ -8,25 +8,20 @@ import 'package:flutter/material.dart';
 
 class MenuLateral extends StatelessWidget {
     @override
-  Widget build(BuildContext context) {
-   
-   
-    //final Cliente cliente =Provider.of<ClientViewModel>(context).client;
-    Cliente cliente=Cliente();
-   //aqui vamos allamar los datos del usuario
-    print("${cliente.nombre}");
+  Widget build(BuildContext context) {     
+    final cliente =Provider.of<ClientViewModel>(context).client;
+      print("${cliente.name}");
     ///aqui yermina
-  
-    
-    return Drawer(
-        
-      child: ListView(
-        
+
+    return Drawer(        
+      child: ListView(        
         children: <Widget>[
         new UserAccountsDrawerHeader(
-            accountName: Text("${cliente.nombre}"),
-            accountEmail:Text("${cliente.email}"),
+          
+            accountName: Text("${cliente.name}",style: TextStyle(color: Colors.black),),
+            accountEmail:Text("${cliente.email}",style: TextStyle(color: Colors.black),),
             decoration: BoxDecoration(
+               
                 image: DecorationImage(
                     image: new AssetImage("assets/images/ico.png")
                     //fit: BoxFit.cover,
