@@ -11,7 +11,7 @@ class Vistacarros extends StatelessWidget {
   Widget build(BuildContext context) {
    
 
-    //MaterialApp solo se usa una vez en el main.drt
+    //MaterialApp solo se usa una vez en el main.drt    
      
     return Scaffold(
          body: Form(
@@ -20,6 +20,7 @@ class Vistacarros extends StatelessWidget {
 
     );
   }
+
 }
 
 

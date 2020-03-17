@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpsadmin/Widgets/WMapa.dart';
+import 'package:gpsadmin/viewmodels/DeviceViewModel.dart';
 import 'package:gpsadmin/viewmodels/auth_view_model.dart';
 import 'package:gpsadmin/viewmodels/client_view_model.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class LoginApp extends StatelessWidget {
       providers: [
       ChangeNotifierProvider<AuthViewModel>(create: (context)=>AuthViewModel()), 
       ChangeNotifierProvider<ClientViewModel>(create: (context)=>ClientViewModel()), 
+      ChangeNotifierProvider<DeviceViewModel>(create: (context)=>DeviceViewModel()), 
       ],
                   
           child: MaterialApp(

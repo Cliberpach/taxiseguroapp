@@ -1,16 +1,12 @@
-
-import 'package:gpsadmin/models/client.dart';
-
 import 'package:gpsadmin/viewmodels/client_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-
+import '../Utils/globals.dart' as globals;
 
 class MenuLateral extends StatelessWidget {
     @override
   Widget build(BuildContext context) {     
-    final cliente =Provider.of<ClientViewModel>(context).client;
-      print("${cliente.name}");
+    
     ///aqui yermina
 
     return Drawer(        
@@ -18,40 +14,35 @@ class MenuLateral extends StatelessWidget {
         children: <Widget>[
         new UserAccountsDrawerHeader(
           
-            accountName: Text("${cliente.name}",style: TextStyle(color: Colors.black),),
-            accountEmail:Text("${cliente.email}",style: TextStyle(color: Colors.black),),
+            accountName: Text(globals.user.nombre,style: TextStyle(color: Colors.black),),
+            accountEmail:Text(globals.user.email,style: TextStyle(color: Colors.black),),
             decoration: BoxDecoration(
-               
-                image: DecorationImage(
-                    image: new AssetImage("assets/images/ico.png")
-                    //fit: BoxFit.cover,
+                 shape: BoxShape.circle,
+                 image: DecorationImage(
+                    image: new AssetImage("assets/images/fotoini.png"),
+                    fit: BoxFit.fill,
 
                     )),
           ),
           ListTile(
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('Total de Vehiculos'), Icon(Icons.computer)]),
+                children: [Text('APAGADO'+"   "+globals.apagado.toString()), Icon(Icons.computer)]),
             //al final de la imagen se debe mostrar el total de vehiculos que tine este usuario
           ),
           ListTile(
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('En Movimiento'), Icon(Icons.business)]),
+                children: [Text('En Movimiento'+"   "+globals.movi.toString()), Icon(Icons.business)]),
             //se bede mostrar la cantidad de unnidades que estan en movimiento
           ),
           ListTile(
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('Detenido'), Icon(Icons.local_taxi)]),
+                children: [Text('Detenido'+"   "+globals.detenido.toString()), Icon(Icons.local_taxi)]),
             ////se bede mostrar la cantidad de unnidades que estan detenidos
           ),
-          ListTile(
-            title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('Sin Conexion'), Icon(Icons.local_parking)]),
-            //se bede mostrar la cantidad de unnidades que estan sin conexion
-          ),
+          
           Divider(),
           ListTile(
             title: Text("Mapa de Flota"),
@@ -63,6 +54,7 @@ class MenuLateral extends StatelessWidget {
             title: Text("Mapa de Unidad"),
             onTap: () {
               //indicar en el buscador que ingrese la placa y lo ubique en el mapa y le de el zoom
+              
             },
           ),
           Divider(),
