@@ -7,7 +7,7 @@ import '../Utils/globals.dart' as globals;
 
 Future<List<Vehiculo>> listDevice(
     String _token, int _id, BuildContext context) async {
-  List<Vehiculo> listdevice = new List<Vehiculo>();
+  globals.listdevice = new List<Vehiculo>();
   print(_id.toString() + " " + _token);
   var response = await http.get(
       'http://www.gpsaseguro.com/api/v1/auth/device/byClient/$_id',
@@ -20,8 +20,8 @@ Future<List<Vehiculo>> listDevice(
   globals.detenido = 0;
   globals.allMarkers.clear();
   for (int carro = 0; carro < datos.length; carro++) {
-    print(datos[carro]["id"]);
-    listdevice.add(Vehiculo(
+    
+    globals.listdevice.add(Vehiculo(   //para tener la lista global en toda la aplicacion
         id: datos[carro]["id"].toString(),
         estate: datos[carro]["certificado"],
         placa: datos[carro]["placa"],
@@ -45,7 +45,7 @@ Future<List<Vehiculo>> listDevice(
           position: LatLng(double.parse(datos[carro]["serial_motor"]),
               double.parse(datos[carro]["numero_serie"]))),
     );
-    revisa = datos[carro]["certificado"];
+    revisa = datos[carro]["certificado"];  //aqui cunto los estados 1 x 1
     switch (revisa) {
       case 'APAGADO':
         globals.apagado = globals.apagado + 1;
@@ -61,5 +61,5 @@ Future<List<Vehiculo>> listDevice(
 
   
 
-  return listdevice;
+  return globals.listdevice;
 }

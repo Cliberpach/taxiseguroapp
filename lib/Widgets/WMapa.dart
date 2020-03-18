@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gpsadmin/services/positiondevice.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import 'WDrawer.dart';
 
 import '../Utils/globals.dart' as globals;
@@ -179,24 +179,21 @@ const mapStyle = [
   ]
 ];
 
+
+
 class HomeMapa extends StatefulWidget {
   @override
   _HomeMapaState createState() => _HomeMapaState();
 }
 
-double _zoom = 11.8;
-
 class _HomeMapaState extends State<HomeMapa> {
-  final CameraPosition _kGooglePlex =
-      CameraPosition(target: LatLng(-8.1118, -79.0287), zoom: _zoom);
-
   Set<Marker> markers;
 
   @override
   void initState() {
     markers = Set.from([]);
     setState(() {
-      _zoom = 10;
+      globals.zoom = 11.8;
     });
   }
 
@@ -220,11 +217,10 @@ class _HomeMapaState extends State<HomeMapa> {
       listDevice(globals.token, globals.user.id, context)
           .then((value) => initState());
 
-          Timer.periodic(Duration(seconds: 15), (_){
-            print("tick");
-            listDevice(globals.token, globals.user.id, context)
-          .then((value) => initState());
-          });
+      Timer.periodic(Duration(seconds: 15), (_) {
+        listDevice(globals.token, globals.user.id, context)
+            .then((value) => initState());
+      });
     }
     return Scaffold(
       appBar: AppBar(
@@ -238,17 +234,70 @@ class _HomeMapaState extends State<HomeMapa> {
           children: <Widget>[
             GoogleMap(
               zoomGesturesEnabled: true,
+              tiltGesturesEnabled: false,
               //aqui ponemos arreglos en el mapa
               mapType: MapType.normal, ////aqui se arreglan los tipos de mapas
-              initialCameraPosition: _kGooglePlex,
+              initialCameraPosition: globals.kGooglePlex,
               myLocationButtonEnabled: true,
 
               /// se oculta el boton de mi ubicacion
               markers: Set.from(globals.allMarkers),
               onMapCreated: (GoogleMapController controller) {
+                globals.map_controller = controller;
                 controller.setMapStyle(jsonEncode(mapStyle));
               },
             ),
+            ////////////////// CAROUSEL
+            globals.listdevice.length>0 ?
+            Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              height: 80,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: CarouselSlider(
+                  enlargeCenterPage: false,
+                   autoPlay: true,
+                  pauseAutoPlayOnTouch: Duration(seconds: 3),
+                  viewportFraction: 0.4,
+                  initialPage: 1,
+                  items: globals.listdevice.map((dispositivo) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return GestureDetector(
+                          onTap: () {
+                            print(dispositivo.lat);
+                            //aqui el zomm tonces
+                            setState(() {
+                          
+                            globals.map_controller.animateCamera(
+                              CameraUpdate.newCameraPosition(
+                                CameraPosition(
+                                  target: LatLng(
+                                    double.parse(dispositivo.lat),
+                                    double.parse(dispositivo.lng),
+                                  ),
+                                  zoom: 20,
+                                ),
+                              ),
+                            );
+                            });
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.all(10.0),
+                            width: 200,
+                            height: 40,
+                            color: Colors.grey,
+                            child: Text(dispositivo.placa),
+                          ),
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
+            ): Offstage(),
             Positioned(
               left: MediaQuery.of(context).size.width - 100,
               top: MediaQuery.of(context).size.height - 250,
@@ -259,9 +308,9 @@ class _HomeMapaState extends State<HomeMapa> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                  
-
-
+                       globals.map_controller.animateCamera(
+                       CameraUpdate.zoomIn(),
+                      );
                     });
                   },
                   icon: Icon(Icons.zoom_in, color: Colors.white),
@@ -278,33 +327,15 @@ class _HomeMapaState extends State<HomeMapa> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                      _zoom--;
+                      globals.map_controller.animateCamera(
+                       CameraUpdate.zoomOut(),
+                      );
                     });
                   },
                   icon: Icon(Icons.zoom_out, color: Colors.white),
                 ),
               ),
             ),
-            Positioned(
-              top: 2.0,
-              right: 15.0,
-              left: 15.0,
-              child: Container(
-                height: 50.0,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.white,
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Busqueda la PLACA - ejemp T5T-123',
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Utils/globals.dart' as globals;
 
@@ -59,14 +60,19 @@ class MenuLateral extends StatelessWidget {
             title: Text("Mapa de Flota"),
             onTap: () {
               //se bede mostraren el mapa todos los vehiculos del cliente en el ,mapa y modificar el zoom para q se muestren todos
+              globals.map_controller.animateCamera(
+                CameraUpdate.newLatLngBounds(
+                  LatLngBounds(
+                    southwest: LatLng(48.8589507, 2.2770205),
+                    northeast: LatLng(50.8550625, 4.3053506),
+                  ),
+                  32.0,
+                ),
+              );
+              Navigator.of(context).pop();
             },
           ),
-          ListTile(
-            title: Text("Mapa de Unidad"),
-            onTap: () {
-              //indicar en el buscador que ingrese la placa y lo ubique en el mapa y le de el zoom
-            },
-          ),
+         
           Divider(),
           ListTile(
             title: Text("WhatsApp"),
@@ -76,6 +82,7 @@ class MenuLateral extends StatelessWidget {
               ///felimente ya esta :)
             },
           ),
+           Divider(),
           ListTile(
             title: Text("Salir"),
             leading: Icon(Icons.exit_to_app),
