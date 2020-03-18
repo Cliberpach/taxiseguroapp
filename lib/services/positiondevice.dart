@@ -13,7 +13,7 @@ Future<List<Vehiculo>> listDevice(
       'http://www.gpsaseguro.com/api/v1/auth/device/byClient/$_id',
       headers: {'Authorization': 'Bearer $_token'});
   var datos = json.decode(utf8.decode(response.bodyBytes));
-  print(datos);
+  
   String revisa;
   globals.apagado = 0;
   globals.movi = 0;
@@ -31,22 +31,19 @@ Future<List<Vehiculo>> listDevice(
         lat: datos[carro]["serial_motor"],
         lng: datos[carro]["numero_serie"],
         phone: datos[carro]["phone"]));
-     
+
     globals.allMarkers.add(
       Marker(
           icon: globals.myIcon,
           markerId: MarkerId(datos[carro]["placa"]),
           infoWindow: InfoWindow(
-            title: datos[carro]["placa"] +".."+datos[carro]["certificado"],
+            title: datos[carro]["placa"] + ".." + datos[carro]["certificado"],
             snippet: "ASEGURO",
           ),
           draggable: true,
-          onTap: () {
-            
-          },
+          onTap: () {},
           position: LatLng(double.parse(datos[carro]["serial_motor"]),
               double.parse(datos[carro]["numero_serie"]))),
-
     );
     revisa = datos[carro]["certificado"];
     switch (revisa) {
@@ -62,23 +59,7 @@ Future<List<Vehiculo>> listDevice(
     }
   }
 
-  print(listdevice.length);
+  
 
   return listdevice;
-
-/*
-    if (response.statusCode != 200) { 
-      print ("ss: " + response.toString());  
-      return listdevice;
-    }else{
-       /* 
-       list=jsonDecode(response.body);
-         print (list);
-               Provider.of<DeviceViewModel>(context, listen: false)
-              .setvehiculo(Vehiculo.fromJson(jsonDecode(response.body)));
-              */
-       return listdevice;
-       
-    }  
-    */
 }

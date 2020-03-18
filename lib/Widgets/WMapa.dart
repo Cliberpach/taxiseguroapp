@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gpsadmin/services/positiondevice.dart';
-import 'package:provider/provider.dart';
+
 import 'WDrawer.dart';
-import 'package:http/http.dart' as http;
+
 import '../Utils/globals.dart' as globals;
 
 const mapStyle = [
@@ -184,7 +184,7 @@ class HomeMapa extends StatefulWidget {
   _HomeMapaState createState() => _HomeMapaState();
 }
 
-double _zoom = 11.5;
+double _zoom = 11.8;
 
 class _HomeMapaState extends State<HomeMapa> {
   final CameraPosition _kGooglePlex =
@@ -237,6 +237,7 @@ class _HomeMapaState extends State<HomeMapa> {
         child: Stack(
           children: <Widget>[
             GoogleMap(
+              zoomGesturesEnabled: true,
               //aqui ponemos arreglos en el mapa
               mapType: MapType.normal, ////aqui se arreglan los tipos de mapas
               initialCameraPosition: _kGooglePlex,
@@ -258,7 +259,9 @@ class _HomeMapaState extends State<HomeMapa> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                      _zoom++;
+                  
+
+
                     });
                   },
                   icon: Icon(Icons.zoom_in, color: Colors.white),
