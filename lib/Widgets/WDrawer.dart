@@ -59,16 +59,18 @@ class MenuLateral extends StatelessWidget {
           ListTile(
             title: Text("Mapa de Flota"),
             onTap: () {
-              //se bede mostraren el mapa todos los vehiculos del cliente en el ,mapa y modificar el zoom para q se muestren todos
+               print(globals.latNor);
+               print(globals.lngNor);
+                print(globals.latSur);
+                print(globals.lngSur);
               globals.map_controller.animateCamera(
                 CameraUpdate.newLatLngBounds(
                   LatLngBounds(
-                    southwest: LatLng(48.8589507, 2.2770205),
-                    northeast: LatLng(50.8550625, 4.3053506),
+                    southwest: LatLng(globals.latSur, globals.lngSur),
+                    northeast: LatLng(globals.latNor, globals.lngNor),  
                   ),
-                  32.0,
-                ),
-              );
+                  100,
+                ));
               Navigator.of(context).pop();
             },
           ),

@@ -45,6 +45,8 @@ Future<List<Vehiculo>> listDevice(
           position: LatLng(double.parse(datos[carro]["serial_motor"]),
               double.parse(datos[carro]["numero_serie"]))),
     );
+    //logica para calcular l¿mas al norte
+   
     revisa = datos[carro]["certificado"];  //aqui cunto los estados 1 x 1
     switch (revisa) {
       case 'APAGADO':
@@ -56,6 +58,15 @@ Future<List<Vehiculo>> listDevice(
       case 'DETENIDO':
         globals.detenido = globals.detenido + 1;
         break;
+    }
+
+    if (double.parse(datos[carro]["serial_motor"])>globals.latNor){
+        globals.latNor=double.parse(datos[carro]["serial_motor"]);
+         globals.lngNor=double.parse(datos[carro]["numero_serie"]);
+    }
+     if (double.parse(datos[carro]["serial_motor"])<globals.latSur){
+        globals.latSur=double.parse(datos[carro]["serial_motor"]);
+         globals.lngSur=double.parse(datos[carro]["numero_serie"]);
     }
   }
 

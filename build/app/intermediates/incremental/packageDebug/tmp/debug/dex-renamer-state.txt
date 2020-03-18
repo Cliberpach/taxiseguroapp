@@ -1,4 +1,4 @@
-#Wed Mar 18 17:23:17 COT 2020
+#Wed Mar 18 18:47:52 COT 2020
 base.0=D\:\\GPSAseguro\\APPTAXISEGURO\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

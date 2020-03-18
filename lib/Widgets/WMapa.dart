@@ -277,7 +277,7 @@ class _HomeMapaState extends State<HomeMapa> {
                                     double.parse(dispositivo.lat),
                                     double.parse(dispositivo.lng),
                                   ),
-                                  zoom: 20,
+                                  zoom: 18,
                                 ),
                               ),
                             );
