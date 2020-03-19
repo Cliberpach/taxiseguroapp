@@ -59,8 +59,8 @@ Future<List<Vehiculo>> listDevice(
         globals.detenido = globals.detenido + 1;
         break;
     }
-
-    if (double.parse(datos[carro]["serial_motor"])>globals.latNor){
+    if (globals.latNor==-100) {
+if (double.parse(datos[carro]["serial_motor"])>globals.latNor){
         globals.latNor=double.parse(datos[carro]["serial_motor"]);
          globals.lngNor=double.parse(datos[carro]["numero_serie"]);
     }
@@ -68,7 +68,14 @@ Future<List<Vehiculo>> listDevice(
         globals.latSur=double.parse(datos[carro]["serial_motor"]);
          globals.lngSur=double.parse(datos[carro]["numero_serie"]);
     }
+    }
+    
+     
   }
+  print(globals.latNor);
+  print(globals.lngNor);
+  print(globals.latSur);
+  print(globals.lngSur);
 
   
 

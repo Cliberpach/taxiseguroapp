@@ -56,22 +56,20 @@ class MenuLateral extends StatelessWidget {
             ////se bede mostrar la cantidad de unnidades que estan detenidos
           ),
           Divider(),
+          
           ListTile(
             title: Text("Mapa de Flota"),
             onTap: () {
-               print(globals.latNor);
-               print(globals.lngNor);
-                print(globals.latSur);
-                print(globals.lngSur);
-              globals.map_controller.animateCamera(
+             globals.latNor=-100;
+             globals.map_controller.animateCamera(
                 CameraUpdate.newLatLngBounds(
                   LatLngBounds(
                     southwest: LatLng(globals.latSur, globals.lngSur),
-                    northeast: LatLng(globals.latNor, globals.lngNor),  
+                    northeast: LatLng(globals.latNor, globals.lngNor),
                   ),
-                  100,
+                  60,
                 ));
-              Navigator.of(context).pop();
+             Navigator.of(context).pop();
             },
           ),
          
