@@ -18,10 +18,12 @@ bool consultado = false;
 double zoom = 11.8;
 GoogleMapController map_controller;
 final CameraPosition kGooglePlex = CameraPosition(target: LatLng(-8.1118, -79.0287), zoom: zoom);
-double latNor=-100;
-double lngNor=1;
-double latSur=1;
-double lngSur=1;
+double latNor=-1.0;
+double lngNor=-1.0;
+
+
+double latSur=1.0;
+double lngSur=-100.0;
 
 
 
