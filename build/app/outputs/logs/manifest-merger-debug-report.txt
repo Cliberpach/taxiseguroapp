@@ -31,7 +31,7 @@ INJECTED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\debug\AndroidManifest.
 INJECTED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 	package
-		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:2:5-35
+		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:2:5-40
 		INJECTED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml
 		INJECTED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\debug\AndroidManifest.xml
 	android:versionName
@@ -75,9 +75,9 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\Le
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.1.0] C:\Users\Lester\.gradle\caches\transforms-2\files-2.1\a528b13ac93e64cafa3d0480e2c93207\core-1.1.0\AndroidManifest.xml:24:18-86
 	android:label
-		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:13:9-33
+		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:13:9-36
 	android:icon
-		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:14:9-43
+		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:14:9-45
 	android:name
 		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:12:9-57
 meta-data#com.google.android.geo.API_KEY
@@ -86,7 +86,7 @@ ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:
 		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:16:16-71
 	android:name
 		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:15:20-65
-activity#com.example.gpsadmin.MainActivity
+activity#com.gpsaseguro.gpscliente.MainActivity
 ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:17:9-45:20
 	android:launchMode
 		ADDED from D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:19:13-43

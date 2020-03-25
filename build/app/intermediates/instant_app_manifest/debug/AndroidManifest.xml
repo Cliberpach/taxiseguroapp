@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gpsadmin"
+    package="com.gpsaseguro.gpscliente"
     android:targetSandboxVersion="2"
-    android:versionCode="1"
-    android:versionName="1.0.0" >
+    android:versionCode="3"
+    android:versionName="1.0.2" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -24,14 +24,14 @@
         android:name="io.flutter.app.FlutterApplication"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="gpsadmin" >
+        android:icon="@mipmap/launcher_icon"
+        android:label="Gps_Aseguro" >
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA_YV6zGdrMGbIeXGgGt8AzEvjZQZtIVUE" />
 
         <activity
-            android:name="com.example.gpsadmin.MainActivity"
+            android:name="com.gpsaseguro.gpscliente.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"

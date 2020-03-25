@@ -55,36 +55,7 @@ class MenuLateral extends StatelessWidget {
                 ]),
             ////se bede mostrar la cantidad de unnidades que estan detenidos
           ),
-          Divider(),
-          ListTile(
-            title: Text("Mapa de Flota"),
-            onTap: () {
-              print("entroooooooooooooooo");
-              //String fixed4 = d.toStringAsFixed(4); // 1.5900
-              String fixedlatNor = globals.latNor.toStringAsFixed(6); // 1.590000
-              String fixedlngNor = globals.lngNor.toStringAsFixed(6); // 1.590000
-              String fixedlatSur = globals.latSur.toStringAsFixed(6); // 1.590000
-              String fixedlngSur = globals.lngSur.toStringAsFixed(6); // 1.590000
-              globals.latNor=double.parse(fixedlatNor);
-              globals.lngNor=double.parse(fixedlngNor);
-              globals.latSur=double.parse(fixedlatSur);
-              globals.lngSur=double.parse(fixedlngSur);
-                print('final');
-              print(globals.latNor);
-              print(globals.lngNor);
-              print(globals.latSur);
-              print(globals.lngSur);
-                print('final');
-              globals.map_controller.animateCamera(CameraUpdate.newLatLngBounds(
-                LatLngBounds(
-                  southwest: LatLng(-8.129606, -79.032827),
-                  northeast: LatLng(-7.725112, -79.306912),
-                ),
-                10.0,
-              ));
-              Navigator.of(context).pop();
-            },
-          ),
+          
           Divider(),
           ListTile(
             title: Text("WhatsApp"),

@@ -21,7 +21,7 @@ class LoginApp extends StatelessWidget {
                   
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'GPS SEGURO',
+            title: 'GPS ASEGURO',
             home: LoginPage(),
             routes: <String, WidgetBuilder>{
               '/VLogin': (BuildContext context) => new LoginPage(),

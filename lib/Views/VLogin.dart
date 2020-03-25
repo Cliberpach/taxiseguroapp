@@ -69,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                             _email = inputValue;
                             setState(() {});
                           },
+                          keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                               icon: Icon(
                                 Icons.email,

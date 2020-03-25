@@ -179,8 +179,6 @@ const mapStyle = [
   ]
 ];
 
-
-
 class HomeMapa extends StatefulWidget {
   @override
   _HomeMapaState createState() => _HomeMapaState();
@@ -238,66 +236,76 @@ class _HomeMapaState extends State<HomeMapa> {
               //aqui ponemos arreglos en el mapa
               mapType: MapType.normal, ////aqui se arreglan los tipos de mapas
               initialCameraPosition: globals.kGooglePlex,
+
               myLocationButtonEnabled: true,
 
               /// se oculta el boton de mi ubicacion
               markers: Set.from(globals.allMarkers),
               onMapCreated: (GoogleMapController controller) {
                 globals.map_controller = controller;
+
                 controller.setMapStyle(jsonEncode(mapStyle));
               },
             ),
             ////////////////// CAROUSEL
-            globals.listdevice.length>0 ?
-            Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width,
-              height: 80,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: CarouselSlider(
-                  enlargeCenterPage: false,
-                   autoPlay: true,
-                  pauseAutoPlayOnTouch: Duration(seconds: 3),
-                  viewportFraction: 0.4,
-                  initialPage: 1,
-                  items: globals.listdevice.map((dispositivo) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return GestureDetector(
-                          onTap: () {
-                            print(dispositivo.lat);
-                            //aqui el zomm tonces
-                            setState(() {
-                          
-                            globals.map_controller.animateCamera(
-                              CameraUpdate.newCameraPosition(
-                                CameraPosition(
-                                  target: LatLng(
-                                    double.parse(dispositivo.lat),
-                                    double.parse(dispositivo.lng),
+            globals.listdevice.length > 0
+                ? Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    height: 80,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: CarouselSlider(
+                        enlargeCenterPage: false,
+                        autoPlay: true,
+                        pauseAutoPlayOnTouch: Duration(seconds: 3),
+                        viewportFraction: 0.4,
+                        initialPage: 1,
+                        items: globals.listdevice.map((dispositivo) {
+                          return Builder(builder: (BuildContext context) {
+                            return GestureDetector(
+                                onTap: () {
+                                  print(dispositivo.lat);
+                                  //aqui el zomm tonces
+                                  setState(() {
+                                    globals.map_controller.animateCamera(
+                                      CameraUpdate.newCameraPosition(
+                                        CameraPosition(
+                                          target: LatLng(
+                                            double.parse(dispositivo.lat),
+                                            double.parse(dispositivo.lng),
+                                          ),
+                                          zoom: 18,
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.all(10.0),
+                                  width: 200,
+                                  height: 40,
+                                  decoration: new BoxDecoration(
+                                    image: new DecorationImage(
+                                      image: new AssetImage(
+                                          "assets/images/placa.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                  zoom: 18,
-                                ),
-                              ),
-                            );
-                            });
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.all(10.0),
-                            width: 200,
-                            height: 40,
-                            color: Colors.grey,
-                            child: Text(dispositivo.placa),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                ),
-              ),
-            ): Offstage(),
+                                  child: Text(
+                                    dispositivo.placa,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 23.0, color: Colors.black),
+                                  ),
+                                ));
+                          });
+                        }).toList(),
+                      ),
+                    ),
+                  )
+                : Offstage(),
             Positioned(
               left: MediaQuery.of(context).size.width - 100,
               top: MediaQuery.of(context).size.height - 250,
@@ -308,8 +316,8 @@ class _HomeMapaState extends State<HomeMapa> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                       globals.map_controller.animateCamera(
-                       CameraUpdate.zoomIn(),
+                      globals.map_controller.animateCamera(
+                        CameraUpdate.zoomIn(),
                       );
                     });
                   },
@@ -328,7 +336,7 @@ class _HomeMapaState extends State<HomeMapa> {
                   onPressed: () {
                     setState(() {
                       globals.map_controller.animateCamera(
-                       CameraUpdate.zoomOut(),
+                        CameraUpdate.zoomOut(),
                       );
                     });
                   },

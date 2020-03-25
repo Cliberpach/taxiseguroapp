@@ -1,4 +1,4 @@
-package com.example.gpsadmin
+package com.gpsaseguro.gpscliente
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

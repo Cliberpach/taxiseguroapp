@@ -1,8 +1,8 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-3    package="com.example.gpsadmin"
-4    android:versionCode="1"
-5    android:versionName="1.0.0" >
+3    package="com.gpsaseguro.gpscliente"
+4    android:versionCode="3"
+5    android:versionName="1.0.2" >
 6
 7    <uses-sdk
 8        android:minSdkVersion="16"
@@ -35,10 +35,10 @@
 24        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 24-->[androidx.core:core:1.1.0] C:\Users\Lester\.gradle\caches\transforms-2\files-2.1\a528b13ac93e64cafa3d0480e2c93207\core-1.1.0\AndroidManifest.xml:24:18-86
 25        android:debuggable="true"
-26        android:icon="@mipmap/ic_launcher"
-26-->D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:14:9-43
-27        android:label="gpsadmin" >
-27-->D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:13:9-33
+26        android:icon="@mipmap/launcher_icon"
+26-->D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:14:9-45
+27        android:label="Gps_Aseguro" >
+27-->D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:13:9-36
 28        <meta-data
 28-->D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:15:9-16:73
 29            android:name="com.google.android.geo.API_KEY"
@@ -48,7 +48,7 @@
 31
 32        <activity
 32-->D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:17:9-45:20
-33            android:name="com.example.gpsadmin.MainActivity"
+33            android:name="com.gpsaseguro.gpscliente.MainActivity"
 33-->D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:18:13-41
 34            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
 34-->D:\GPSAseguro\APPTAXISEGURO\android\app\src\main\AndroidManifest.xml:21:13-163
