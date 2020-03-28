@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Utils/globals.dart' as globals;
 
@@ -12,7 +11,7 @@ class MenuLateral extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          new UserAccountsDrawerHeader(
+          new UserAccountsDrawerHeader(                   
             accountName: Text(
               globals.user.nombre,
               style: TextStyle(color: Colors.black),
@@ -21,12 +20,12 @@ class MenuLateral extends StatelessWidget {
               globals.user.email,
               style: TextStyle(color: Colors.black),
             ),
-            decoration: BoxDecoration(
+             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   image: new AssetImage("assets/images/fotoini.png"),
-                  fit: BoxFit.fill,
-                )),
+                  fit: BoxFit.contain,
+                )), 
           ),
           ListTile(
             title: Row(

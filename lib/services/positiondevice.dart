@@ -19,8 +19,10 @@ Future<List<Vehiculo>> listDevice(
   globals.movi = 0;
   globals.detenido = 0;
   globals.allMarkers.clear();
-  for (int carro = 0; carro < datos.length; carro++) { ////con este for pinto los N amracdores
+  for (int carro = 0; carro < datos.length; carro++) {
+    print(datos[carro]["color"]); ////con este for pinto los N amracdores
     globals.listdevice.add(Vehiculo(
+        
         //para tener la lista global en toda la aplicacion
         id: datos[carro]["id"].toString(),
         estate: datos[carro]["certificado"],

@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: new Image(
                         width: 250,
                         height: 250,
-                        image: new AssetImage("assets/images/fotoini.png"),
+                        image: new AssetImage("assets/images/icono.png"),
                       ),
                     ),
                     width: 250.0,

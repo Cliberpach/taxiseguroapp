@@ -193,12 +193,13 @@ class _HomeMapaState extends State<HomeMapa> {
     setState(() {
       globals.zoom = 11.8;
     });
+    super.initState();
   }
 
   createMarker(_context) {
-    ImageConfiguration configuration = createLocalImageConfiguration(_context);
+    ImageConfiguration configuration = createLocalImageConfiguration(_context,size: Size(100,100));
     BitmapDescriptor.fromAssetImage(
-            configuration, "assets/images/markerico.png")
+            configuration, "assets/images/blanco.png")
         .then((icon) {
       setState(() {
         globals.myIcon = icon;
@@ -211,6 +212,7 @@ class _HomeMapaState extends State<HomeMapa> {
   Widget build(BuildContext context) {
     if (globals.consultado == false) {
       globals.consultado = true;
+
       createMarker(context);
       listDevice(globals.token, globals.user.id, context)
           .then((value) => initState());
@@ -242,7 +244,7 @@ class _HomeMapaState extends State<HomeMapa> {
               /// se oculta el boton de mi ubicacion
               markers: Set.from(globals.allMarkers),
               onMapCreated: (GoogleMapController controller) {
-                globals.map_controller = controller;
+                globals.mapcontroller = controller;
 
                 controller.setMapStyle(jsonEncode(mapStyle));
               },
@@ -251,6 +253,7 @@ class _HomeMapaState extends State<HomeMapa> {
             globals.listdevice.length > 0
                 ? Container(
                     alignment: Alignment.center,
+                    color: Colors.transparent,
                     width: MediaQuery.of(context).size.width,
                     height: 80,
                     child: Container(
@@ -268,7 +271,7 @@ class _HomeMapaState extends State<HomeMapa> {
                                   print(dispositivo.lat);
                                   //aqui el zomm tonces
                                   setState(() {
-                                    globals.map_controller.animateCamera(
+                                    globals.mapcontroller.animateCamera(
                                       CameraUpdate.newCameraPosition(
                                         CameraPosition(
                                           target: LatLng(
@@ -281,16 +284,17 @@ class _HomeMapaState extends State<HomeMapa> {
                                     );
                                   });
                                 },
-                                child: Container(
+                                child: Container(                                  
                                   alignment: Alignment.center,
                                   margin: EdgeInsets.all(10.0),
                                   width: 200,
                                   height: 40,
                                   decoration: new BoxDecoration(
+                                    
                                     image: new DecorationImage(
                                       image: new AssetImage(
                                           "assets/images/placa.jpg"),
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.contain,
                                     ),
                                   ),
                                   child: Text(
@@ -316,7 +320,7 @@ class _HomeMapaState extends State<HomeMapa> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                      globals.map_controller.animateCamera(
+                      globals.mapcontroller.animateCamera(
                         CameraUpdate.zoomIn(),
                       );
                     });
@@ -335,7 +339,7 @@ class _HomeMapaState extends State<HomeMapa> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                      globals.map_controller.animateCamera(
+                      globals.mapcontroller.animateCamera(
                         CameraUpdate.zoomOut(),
                       );
                     });
