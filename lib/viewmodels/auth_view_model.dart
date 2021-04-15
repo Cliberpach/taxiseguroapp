@@ -6,7 +6,7 @@ class AuthViewModel extends ChangeNotifier {
 
   User get user => _user;
 
-  setUser(User _u) {
+  set setUser(User _u) {
     _user = _u;
     notifyListeners();
   }

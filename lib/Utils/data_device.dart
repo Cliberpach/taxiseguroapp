@@ -11,5 +11,8 @@ class DataDevice {
   String lng;  //este es la lng
   String phone;
 
-DataDevice({this.id, this.estate, this.certificado,this.placa,this.marca,this.modelo,this.color,this.lat,this.lng});
+// ignore: sort_constructors_first
+DataDevice({this.id, this.estate,
+ this.certificado,this.placa,
+ this.marca,this.modelo,this.color,this.lat,this.lng});
 }

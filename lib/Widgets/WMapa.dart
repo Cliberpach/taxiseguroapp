@@ -1,13 +1,16 @@
-import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:gpsadmin/services/positiondevice.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'WDrawer.dart';
 
-import '../Utils/globals.dart' as globals;
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:gpsadmin/Widgets/Wlistvehiculos.dart';
+import 'package:gpsadmin/Widgets/Wnotification.dart';
+import 'package:gpsadmin/bloc/loginbloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'WDrawer.dart';
 
 const mapStyle = [
   [
@@ -184,173 +187,302 @@ class HomeMapa extends StatefulWidget {
   _HomeMapaState createState() => _HomeMapaState();
 }
 
-class _HomeMapaState extends State<HomeMapa> {
-  Set<Marker> markers;
+class _HomeMapaState extends State<HomeMapa> with WidgetsBindingObserver {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin fltNotification;
+  AndroidNotificationChannel channel = const AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    'This channel is used for important notifications.', // description
+    importance: Importance.high,
+  );
 
   @override
   void initState() {
-    markers = Set.from([]);
-    setState(() {
-      globals.zoom = 11.8;
-    });
+    notitficationPermission();
+    initMessaging();
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
-  createMarker(_context) {
-    ImageConfiguration configuration = createLocalImageConfiguration(_context,size: Size(100,100));
-    BitmapDescriptor.fromAssetImage(
-            configuration, "assets/images/blanco.png")
-        .then((icon) {
-      setState(() {
-        globals.myIcon = icon;
-        //print(icon);
-      });
-    });
+  void getToken() async {
+    print(await messaging.getToken());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.inactive:
+        setState(() {});
+        print('===================================================Inactive');
+        break;
+      case AppLifecycleState.paused:
+        setState(() {});
+        print('========================Paused');
+        break;
+      case AppLifecycleState.resumed:
+        setState(() {});
+        print('=========================================Resumed');
+        break;
+      case AppLifecycleState.detached:
+        setState(() {});
+        // TODO: Handle this case.
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (globals.consultado == false) {
-      globals.consultado = true;
-
-      createMarker(context);
-      listDevice(globals.token, globals.user.id, context)
-          .then((value) => initState());
-
-      Timer.periodic(Duration(seconds: 15), (_) {
-        listDevice(globals.token, globals.user.id, context)
-            .then((value) => initState());
-      });
-    }
+    print("Vuelve a dibujar=================");
+    final blocmap = Provider.of<LoginBloc>(context, listen: true);
+    blocmap.mapcontroller?.setMapStyle(jsonEncode(mapStyle));
     return Scaffold(
       appBar: AppBar(
-        title: Text("Lista de vehiculos"),
+        backgroundColor: Colors.white,
+        title: const Text('Lista de vehiculos'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: GestureDetector(
+                onTap: () {
+                  blocmap.getnotification();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const WNotification()));
+                },
+                child: const Icon(MdiIcons.bellOutline)),
+          )
+        ],
       ),
       drawer: MenuLateral(),
       body: Container(
         width: double.infinity,
         height: double.infinity,
         child: Stack(
+          alignment: Alignment.center,
           children: <Widget>[
             GoogleMap(
+              onTap: (latlong) {
+                blocmap.changuevisibledi();
+              },
+              // ignore: sdk_version_set_literal
+              polylines: {
+                Polyline(
+                  polylineId: PolylineId('1'),
+                  color: Colors.red,
+                  points: blocmap.polylinelist
+                      .map((e) => LatLng(e.latitude, e.longitude))
+                      .toList(),
+                ),
+              },
               zoomGesturesEnabled: true,
               tiltGesturesEnabled: false,
-              //aqui ponemos arreglos en el mapa
-              mapType: MapType.normal, ////aqui se arreglan los tipos de mapas
-              initialCameraPosition: globals.kGooglePlex,
-
+              mapType: MapType.normal,
+              compassEnabled: true,
+              zoomControlsEnabled: false,
+              initialCameraPosition: blocmap.kGooglePlex,
               myLocationButtonEnabled: true,
-
-              /// se oculta el boton de mi ubicacion
-              markers: Set.from(globals.allMarkers),
+              markers: Set.from(blocmap.allMarkers),
               onMapCreated: (GoogleMapController controller) {
-                globals.mapcontroller = controller;
-
-                controller.setMapStyle(jsonEncode(mapStyle));
+                blocmap.mapcontroller = controller;
+              },
+              onCameraMove: (cameramove) {
+                //blocmap.changuevisibledi();
               },
             ),
-            ////////////////// CAROUSEL
-            globals.listdevice.length > 0
-                ? Container(
-                    alignment: Alignment.center,
-                    color: Colors.transparent,
-                    width: MediaQuery.of(context).size.width,
-                    height: 80,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: CarouselSlider(
-                        enlargeCenterPage: false,
-                        autoPlay: true,
-                        pauseAutoPlayOnTouch: Duration(seconds: 3),
-                        viewportFraction: 0.4,
-                        initialPage: 1,
-                        items: globals.listdevice.map((dispositivo) {
-                          return Builder(builder: (BuildContext context) {
-                            return GestureDetector(
-                                onTap: () {
-                                  print(dispositivo.lat);
-                                  //aqui el zomm tonces
-                                  setState(() {
-                                    globals.mapcontroller.animateCamera(
-                                      CameraUpdate.newCameraPosition(
-                                        CameraPosition(
-                                          target: LatLng(
-                                            double.parse(dispositivo.lat),
-                                            double.parse(dispositivo.lng),
-                                          ),
-                                          zoom: 18,
-                                        ),
-                                      ),
-                                    );
-                                  });
-                                },
-                                child: Container(                                  
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.all(10.0),
-                                  width: 200,
-                                  height: 40,
-                                  decoration: new BoxDecoration(
-                                    
-                                    image: new DecorationImage(
-                                      image: new AssetImage(
-                                          "assets/images/placa.jpg"),
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    dispositivo.placa,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 23.0, color: Colors.black),
-                                  ),
-                                ));
-                          });
-                        }).toList(),
+            Positioned(
+                right: 20,
+                bottom: 250,
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        blocmap.mapcontroller
+                            .animateCamera(CameraUpdate.zoomIn());
+                      },
+                      child: const CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.blueAccent,
+                        child: Icon(Icons.zoom_in, color: Colors.white),
                       ),
                     ),
-                  )
-                : Offstage(),
-            Positioned(
-              left: MediaQuery.of(context).size.width - 100,
-              top: MediaQuery.of(context).size.height - 250,
-              child: Container(
-                width: 50,
-                height: 50,
-                color: Colors.grey,
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      globals.mapcontroller.animateCamera(
-                        CameraUpdate.zoomIn(),
-                      );
-                    });
-                  },
-                  icon: Icon(Icons.zoom_in, color: Colors.white),
-                ),
-              ),
+                    const SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () {
+                        blocmap.mapcontroller.animateCamera(
+                          CameraUpdate.zoomOut(),
+                        );
+                      },
+                      child: const CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.blueAccent,
+                        child: Icon(Icons.zoom_out, color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Consumer<LoginBloc>(builder: (context, bloc, widget) {
+                      return bloc.destinationrout.latitude == 0
+                          ? Container()
+                          : GestureDetector(
+                              onTap: () async {
+                                var estado = await bloc.locationGPS();
+                                switch (estado) {
+                                  case 1:
+                                    return showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text('Error'),
+                                        content: const Text(
+                                            'La opción de GPS se encuentra desactivado'),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                primary: Colors.blueAccent),
+                                            onPressed: () {
+                                              bloc.statusgps =
+                                                  StatusGPS.initialgps;
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                    break;
+                                  case 2:
+                                    return showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text('Error'),
+                                        content: const Text(
+                                            'El permiso de Geolocalización esta desactivado'),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                primary: Colors.blueAccent),
+                                            onPressed: () {
+                                              bloc.statusgps =
+                                                  StatusGPS.initialgps;
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+
+                                    break;
+                                  case 3:
+                                    await blocmap.getposition();
+                                    break;
+                                  default:
+                                }
+                              },
+                              child: const CircleAvatar(
+                                radius: 25,
+                                backgroundColor: Colors.blueAccent,
+                                child: Text('Ir',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            );
+                    })
+                  ],
+                )),
+            const Positioned(
+              bottom: 20,
+              child: Wlistvehiculos(),
             ),
-            Positioned(
-              left: MediaQuery.of(context).size.width - 100,
-              top: MediaQuery.of(context).size.height - 200,
-              child: Container(
-                width: 50,
-                height: 50,
-                color: Colors.grey,
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      globals.mapcontroller.animateCamera(
-                        CameraUpdate.zoomOut(),
-                      );
-                    });
-                  },
-                  icon: Icon(Icons.zoom_out, color: Colors.white),
-                ),
-              ),
-            ),
+            Consumer<LoginBloc>(builder: (__, bloc, widget) {
+              return AnimatedPositioned(
+                duration: const Duration(milliseconds: 900),
+                top: bloc.visibledi == false ? 0 : 50,
+                child: Align(
+                    alignment: Alignment.center,
+                    child: bloc.visibledi == false
+                        ? Container()
+                        : GestureDetector(
+                            onTap: () {
+                              bloc.changuevisibledi();
+                            },
+                            child: Card(
+                              elevation: 2,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                color: Colors.white,
+                                //height: 100,
+                                width: MediaQuery.of(context).size.width / 1.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Placa : ${bloc.placa}'),
+                                    const SizedBox(height: 10),
+                                    Text('Dirección :  ${bloc.direccion}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )),
+              );
+            })
           ],
         ),
       ),
+    );
+  }
+
+  void initMessaging() {
+    var androiInit = const AndroidInitializationSettings('app_icon');
+    var initSetting = InitializationSettings(android: androiInit);
+    fltNotification = FlutterLocalNotificationsPlugin();
+    fltNotification.initialize(initSetting);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // ignore: omit_local_variable_types
+      RemoteNotification notification = message.notification;
+      // ignore: omit_local_variable_types
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                icon: 'launch_background',
+              ),
+            ));
+      }
+      //showNotification();
+    });
+  }
+
+  void notitficationPermission() async {
+    // ignore: omit_local_variable_types
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
     );
   }
 }

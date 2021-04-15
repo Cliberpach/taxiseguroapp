@@ -1,163 +1,179 @@
 import 'package:gpsadmin/Widgets/WMapa.dart';
-import 'package:gpsadmin/services/endpoint.dart';
+import 'package:gpsadmin/bloc/loginbloc.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Utils/globals.dart' as globals;
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class LoginPage extends StatefulWidget {
+  @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String mensaje = '';
-  String _email;
-  String _password;
-
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.of<LoginBloc>(context, listen: true);
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Form(
-          child: Container(
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: new AssetImage("assets/images/digital.jpg"),
-                fit: BoxFit.cover,
-              ),
+        backgroundColor: Colors.white,
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: size.height,
+              width: size.width,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/fondo.png'),
+                      fit: BoxFit.cover)),
             ),
-            child: Column(
-              //aqui le icono de gps asguro
-              children: <Widget>[
-                new Container(
-                    padding: EdgeInsets.only(top: 77.0),
-                    child: new CircleAvatar(
-                      backgroundColor: Color(0xF81F7F3),
-                      child: new Image(
-                        width: 250,
-                        height: 250,
-                        image: new AssetImage("assets/images/icono.png"),
-                      ),
-                    ),
-                    width: 250.0,
-                    height: 250.0,
-                    decoration: BoxDecoration(shape: BoxShape.circle)),
-                Container(
-                  height: MediaQuery.of(context).size.height / 2,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(top: 73),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width / 1.2,
-                        height: 50,
-                        margin: EdgeInsets.only(top: 32),
-                        padding: EdgeInsets.only(
-                          top: 4,
-                          left: 16,
-                          right: 16,
-                          bottom: 4,
+            SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                        width: size.width / 3.2,
+                        child: const Image(
+                          //width: 250,
+                          image: AssetImage('assets/images/icono.png'),
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(color: Colors.black12, blurRadius: 5),
+                        decoration:
+                            const BoxDecoration(shape: BoxShape.circle)),
+                    const SizedBox(height: 20),
+                    const Text('AseguroPeru',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18)),
+                    const SizedBox(height: 50),
+                    Card(
+                      color: Colors.white,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 30),
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: bloc.email,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.teal)),
+                                  prefixIcon: Icon(
+                                    Icons.email_outlined,
+                                    color: Colors.black,
+                                  ),
+                                  hintText: 'E-Mail'),
+                            ),
+                            const SizedBox(height: 30),
+                            TextField(
+                              controller: bloc.password,
+                              obscureText: !bloc.visible,
+                              decoration: InputDecoration(
+                                  border: const OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.teal)),
+                                  prefixIcon: const Icon(
+                                    Icons.vpn_key_outlined,
+                                    color: Colors.black,
+                                  ),
+                                  suffixIcon: GestureDetector(
+                                      onTap: () {
+                                        bloc.visible = !bloc.visible;
+                                      },
+                                      child: Icon(bloc.visible == true
+                                          ? MdiIcons.eye
+                                          : MdiIcons.eyeOff)),
+                                  hintText: 'Contraseña'),
+                            ),
+                            const SizedBox(height: 30),
+                            Consumer<LoginBloc>(
+                                builder: (context, bloclogin, widget) {
+                              return SizedBox(
+                                width: size.width,
+                                height: 50,
+                                child: ElevatedButton(
+                                    child: bloc.loading
+                                        ? const CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.white))
+                                        : const Text('INGRESAR'),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.orangeAccent,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    ),
+                                    onPressed: () async {
+                                      var result = await bloc.login();
+                                      switch (result) {
+                                        case Statuslogin.success:
+                                          return Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HomeMapa()));
+                                          break;
+                                        case Statuslogin.error:
+                                          return showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: const Text('Error'),
+                                              content: const Text(
+                                                  'Usuario o contraseña incorrecta'),
+                                              actions: <Widget>[
+                                                ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          elevation: 0,
+                                                          primary:
+                                                              Colors.redAccent),
+                                                  onPressed: () {
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop();
+                                                  },
+                                                  child: const Text('OK'),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                          break;
+                                        default:
+                                      }
+                                    }),
+                              );
+                            })
                           ],
                         ),
-                        child: TextField(
-                          onChanged: (String inputValue) {
-                            _email = inputValue;
-                            setState(() {});
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                              icon: Icon(
-                                Icons.email,
-                                color: Colors.black,
-                              ),
-                              hintText: 'E-Mail'),
-                        ),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 1.2,
-                        height: 50,
-                        margin: EdgeInsets.only(top: 32),
-                        padding: EdgeInsets.only(
-                          top: 4,
-                          left: 16,
-                          right: 16,
-                          bottom: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(color: Colors.black12, blurRadius: 5),
-                          ],
-                        ),
-                        child: TextField(
-                          onChanged: (String inputValue) {
-                            setState(() {
-                              _password = inputValue;
-                            });
-                          },
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              icon: Icon(
-                                Icons.vpn_key,
-                                color: Colors.black,
-                              ),
-                              hintText: 'Password'),
-                        ),
-                      ),
-                      Spacer(),
-                      new RaisedButton(
-                          child: new Text("INGRESAR"),
-                          color: Colors.orangeAccent,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(71.0)),
-                          onPressed: () async {
-                            await Apis()
-                                .login(_email, _password, context)
-                                .then((_token) {
-                              if (_token != null) {
-                                globals.token = _token;
-                                getUser(_token, context).then((value) =>
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => HomeMapa())));                                            
-                              }
-                            });
-                          }),
-                      Text(
-                        mensaje,
-                        style: TextStyle(fontSize: 14.0, color: Colors.red),
-                      ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            )
+          ],
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () async {
               whatsAppOpen();
             },
             backgroundColor: Colors.green,
-            child: Image.asset(
-              'assets/images/whatsapp.png',
+            child: const Icon(
+              MdiIcons.whatsapp,
               color: Colors.white,
             )));
   }
 }
 
-//floatingActionButton: Container( height: 100.0, width: 100.0, child: FittedBox( child: FloatingActionButton(onPressed: () {}), ), ),
 void whatsAppOpen() async {
   var whatsappUrl =
-      "whatsapp://send?phone=+51957281730&text=Escriba mensaje para el administrador";
+      'whatsapp://send?phone=+51957281730&text=Escriba mensaje para el administrador';
   await canLaunch(whatsappUrl)
       ? launch(whatsappUrl)
-      : print("no tiene whatsapp instalado");
+      : print('no tiene whatsapp instalado');
 }

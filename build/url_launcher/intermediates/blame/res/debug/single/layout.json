@@ -1,22 +1,26 @@
 [
     {
-        "merged": "C:\\Users\\EQUIPO\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_template_part_chronometer.xml",
-        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\0a271e99b6771ad4a84318244d532fb7\\core-1.0.0\\res\\layout\\notification_template_part_chronometer.xml"
+        "merged": "D:\\PROYECTOS_FLUTTER\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_action.xml",
+        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\3e26ef26d15f163a2f1a31a2130a0254\\core-1.1.0\\res\\layout\\notification_action.xml"
     },
     {
-        "merged": "C:\\Users\\EQUIPO\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_template_icon_group.xml",
-        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\0a271e99b6771ad4a84318244d532fb7\\core-1.0.0\\res\\layout\\notification_template_icon_group.xml"
+        "merged": "D:\\PROYECTOS_FLUTTER\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\3e26ef26d15f163a2f1a31a2130a0254\\core-1.1.0\\res\\layout\\notification_action_tombstone.xml"
     },
     {
-        "merged": "C:\\Users\\EQUIPO\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_action.xml",
-        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\0a271e99b6771ad4a84318244d532fb7\\core-1.0.0\\res\\layout\\notification_action.xml"
+        "merged": "D:\\PROYECTOS_FLUTTER\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\3e26ef26d15f163a2f1a31a2130a0254\\core-1.1.0\\res\\layout\\notification_template_icon_group.xml"
     },
     {
-        "merged": "C:\\Users\\EQUIPO\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_action_tombstone.xml",
-        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\0a271e99b6771ad4a84318244d532fb7\\core-1.0.0\\res\\layout\\notification_action_tombstone.xml"
+        "merged": "D:\\PROYECTOS_FLUTTER\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_template_part_time.xml",
+        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\3e26ef26d15f163a2f1a31a2130a0254\\core-1.1.0\\res\\layout\\notification_template_part_time.xml"
     },
     {
-        "merged": "C:\\Users\\EQUIPO\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_template_part_time.xml",
-        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\0a271e99b6771ad4a84318244d532fb7\\core-1.0.0\\res\\layout\\notification_template_part_time.xml"
+        "merged": "D:\\PROYECTOS_FLUTTER\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\notification_template_part_chronometer.xml",
+        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\3e26ef26d15f163a2f1a31a2130a0254\\core-1.1.0\\res\\layout\\notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "D:\\PROYECTOS_FLUTTER\\taxiseguroapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout\\custom_dialog.xml",
+        "source": "C:\\Users\\EQUIPO\\.gradle\\caches\\transforms-2\\files-2.1\\3e26ef26d15f163a2f1a31a2130a0254\\core-1.1.0\\res\\layout\\custom_dialog.xml"
     }
 ]
