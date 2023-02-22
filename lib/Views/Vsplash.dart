@@ -39,9 +39,9 @@ class _VSplashState extends State<VSplash> with AfterLayoutMixin {
         color: Colors.white,
         child: Center(
           child: Container(
-            height: 150,
-            width: 150,
-            child: Image.asset('assets/images/icono.png'),
+            //height: 150,
+            width: MediaQuery.of(context).size.width - 20,
+            child: Image.asset('assets/images/logoini.jpg'),
           ),
         ),
       )),

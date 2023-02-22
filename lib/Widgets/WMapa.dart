@@ -1,15 +1,18 @@
 import 'dart:convert';
 
+import 'package:bs_flutter_selectbox/bs_flutter_selectbox.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:gpsadmin/Widgets/Wlistvehiculos.dart';
 import 'package:gpsadmin/Widgets/Wnotification.dart';
+import 'package:gpsadmin/Widgets/report_car.dart';
 import 'package:gpsadmin/bloc/loginbloc.dart';
+import 'package:gpsadmin/models/vehiculo.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'WDrawer.dart';
 
 const mapStyle = [
@@ -241,13 +244,53 @@ class _HomeMapaState extends State<HomeMapa> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    print("Vuelve a dibujar=================");
     final blocmap = Provider.of<LoginBloc>(context, listen: true);
     blocmap.mapcontroller?.setMapStyle(jsonEncode(mapStyle));
     return Scaffold(
       appBar: AppBar(
+        elevation: 1,
         backgroundColor: Colors.white,
-        title: const Text('Lista de vehiculos'),
+        title: Container(
+          width: 220,
+          //height: 35,
+          child: BsSelectBox(
+            searchable: false,
+            padding: const EdgeInsets.all(8),
+            hintText: blocmap.totalvehiculodrop,
+            controller: blocmap.vehiculosdroplist,
+            onChange: (value) async {
+              blocmap.visibledi = false;
+              Vehiculo vehiculo = value.getValue();
+              if (vehiculo.imei == '0') {
+                blocmap.moveCamera(-8.1118, -79.0287, 12.0);
+                // blocmap.getroute();
+                blocmap.isStopped2 = true;
+                blocmap.isStopped = false;
+                
+                blocmap
+                  ..getvehiculos()
+                  ..callapi();
+
+                print("======TODOS=============");
+                blocmap.polylinelist = {};
+                blocmap.moveCamera2(-8.1118, -79.0287, 12);
+              } else {
+                blocmap.isStopped = true;
+                blocmap.isStopped2 = false;
+                blocmap.placar = vehiculo.placa;
+                blocmap.dispositivo = vehiculo.imei;
+                blocmap.vehiculosinplaca = Vehiculo(
+                    lat: vehiculo.lat,
+                    lng: vehiculo.lng,
+                    placa: vehiculo.placa);
+                blocmap
+                  ..getroute15()
+                  ..callapi2();
+                //blocmap.mapcontroller.setMapStyle(jsonEncode(mapStyle));
+              }
+            },
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -274,19 +317,22 @@ class _HomeMapaState extends State<HomeMapa> with WidgetsBindingObserver {
               onTap: (latlong) {
                 blocmap.changuevisibledi();
               },
+              polylines: blocmap.polylinelist,
               // ignore: sdk_version_set_literal
-              polylines: {
-                Polyline(
-                  polylineId: PolylineId('1'),
-                  color: Colors.red,
-                  points: blocmap.polylinelist
-                      .map((e) => LatLng(e.latitude, e.longitude))
-                      .toList(),
-                ),
-              },
+              // polylines: {
+              //   Polyline(
+              //     polylineId: PolylineId('1'),
+              //     color: Colors.red,
+              //     points: blocmap.polylinelist
+              //         .map((e) => LatLng(e.latitude, e.longitude))
+              //         .toList(),
+              //   ),
+              // },
               zoomGesturesEnabled: true,
               tiltGesturesEnabled: false,
-              mapType: MapType.normal,
+              mapType: blocmap.stylemap == false
+                  ? MapType.normal
+                  : MapType.satellite,
               compassEnabled: true,
               zoomControlsEnabled: false,
               initialCameraPosition: blocmap.kGooglePlex,
@@ -298,12 +344,25 @@ class _HomeMapaState extends State<HomeMapa> with WidgetsBindingObserver {
               onCameraMove: (cameramove) {
                 //blocmap.changuevisibledi();
               },
+              cameraTargetBounds: CameraTargetBounds(blocmap.boundmaps),
             ),
             Positioned(
                 right: 20,
-                bottom: 250,
+                bottom: 70,
                 child: Column(
                   children: [
+                    GestureDetector(
+                      onTap: () async {
+                        blocmap.stylemap = !blocmap.stylemap;
+                        print(blocmap.stylemap);
+                      },
+                      child: const CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Colors.blueAccent,
+                        child: Icon(Icons.layers_outlined, color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
                     GestureDetector(
                       onTap: () {
                         blocmap.mapcontroller
@@ -398,17 +457,83 @@ class _HomeMapaState extends State<HomeMapa> with WidgetsBindingObserver {
                                     style: TextStyle(color: Colors.white)),
                               ),
                             );
-                    })
+                    }),
+                    const SizedBox(height: 10),
+                    blocmap.visibledi
+                        ? GestureDetector(
+                            onTap: () {
+                              // blocmap.estadoreport = 0;
+                              blocmap.isStopped = true;
+                              blocmap.isStopped2 = true;
+                              blocmap.estadoreport = 3;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PageReportCar(
+                                          placa: blocmap.placar)));
+                            },
+                            child: const CircleAvatar(
+                                radius: 25,
+                                backgroundColor: Colors.blueAccent,
+                                child: Icon(MdiIcons.chartBoxOutline,
+                                    color: Colors.white)))
+                        : Container(),
+                    const SizedBox(height: 30),
+                    blocmap.visibledi
+                        ? GestureDetector(
+                            onTap: () async {
+                              final googleMapslocationUrl =
+                                  "http://www.google.com/maps?layer=c&cbll=${blocmap.streetview.latitude},${blocmap.streetview.longitude}";
+                              print(googleMapslocationUrl);
+                              final encodedURl =
+                                  Uri.encodeFull(googleMapslocationUrl);
+                              if (await canLaunch(encodedURl)) {
+                                await launch(encodedURl);
+                              } else {
+                                print('Could not launch $encodedURl');
+                              }
+                            },
+                            child: const CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.orange,
+                              child: Icon(MdiIcons.googleStreetView,
+                                  color: Colors.white),
+                            ),
+                          )
+                        : Container(),
                   ],
                 )),
-            const Positioned(
-              bottom: 20,
-              child: Wlistvehiculos(),
-            ),
+            blocmap.visibledi
+                ? Positioned(
+                    top: -3,
+                    child: Card(
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Icon(Icons.speed, color: Colors.blueAccent),
+                            Text('Velocidad: ${blocmap.velocidad}'),
+                            const SizedBox(width: 30),
+                            const Icon(Icons.signal_cellular_alt,
+                                color: Colors.blueAccent),
+                            Text('Señal: ${blocmap.senal}%')
+                          ],
+                        ),
+                      ),
+                    ))
+                : Container(),
+            // const Positioned(
+            //   bottom: 20,
+            //   child: Wlistvehiculos(),
+            // ),
             Consumer<LoginBloc>(builder: (__, bloc, widget) {
               return AnimatedPositioned(
                 duration: const Duration(milliseconds: 900),
-                top: bloc.visibledi == false ? 0 : 50,
+                top: bloc.visibledi == false ? 0 : 70,
                 child: Align(
                     alignment: Alignment.center,
                     child: bloc.visibledi == false

@@ -1,8 +1,8 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:gpsadmin/bloc/loginbloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MenuLateral extends StatelessWidget {
@@ -13,9 +13,9 @@ class MenuLateral extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            currentAccountPicture:Container(
-              child: Image.asset('assets/images/fotoini.png'),
-            ) ,
+            currentAccountPicture: Container(
+              child: Image.asset('assets/images/logodraw.png'),
+            ),
             accountName: Text(
               bloc.usuario.nombre,
               style: const TextStyle(color: Colors.black),
@@ -31,13 +31,13 @@ class MenuLateral extends StatelessWidget {
                   fit: BoxFit.cover,
                 )),
           ),
-           ListTile(
+          ListTile(
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 const Expanded(child: Text('Total')),
-                 Text(bloc.totalve.toString()),
-                 const SizedBox(width: 20),
+                  const Expanded(child: Text('Total')),
+                  Text(bloc.totalve.toString()),
+                  const SizedBox(width: 20),
                   const Icon(MdiIcons.carMultiple)
                 ]),
           ),
@@ -45,9 +45,9 @@ class MenuLateral extends StatelessWidget {
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 const Expanded(child: Text('Apagado')),
-                 Text(bloc.apagado.toString()),
-                 const SizedBox(width: 20),
+                  const Expanded(child: Text('Apagado')),
+                  Text(bloc.apagado.toString()),
+                  const SizedBox(width: 20),
                   const Icon(MdiIcons.power)
                 ]),
           ),
@@ -55,9 +55,9 @@ class MenuLateral extends StatelessWidget {
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   const Expanded(child:Text( 'En Movimiento')),
-                   Text(bloc.enmovimiento.toString()),
-                 const SizedBox(width: 20),
+                  const Expanded(child: Text('En Movimiento')),
+                  Text(bloc.enmovimiento.toString()),
+                  const SizedBox(width: 20),
                   const Icon(MdiIcons.carArrowRight)
                 ]),
             //se bede mostrar la cantidad de unnidades que estan en movimiento
@@ -66,9 +66,9 @@ class MenuLateral extends StatelessWidget {
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   const Expanded(child:Text('Detenido')),
-                    Text(bloc.detenido.toString()),
-                      const SizedBox(width: 20),
+                  const Expanded(child: Text('Detenido')),
+                  Text(bloc.detenido.toString()),
+                  const SizedBox(width: 20),
                   const Icon(MdiIcons.alertOctagonOutline)
                 ]),
             ////se bede mostrar la cantidad de unnidades que estan detenidos
@@ -86,8 +86,13 @@ class MenuLateral extends StatelessWidget {
           ListTile(
             title: const Text('Salir'),
             leading: const Icon(Icons.exit_to_app),
-            onTap: () {
-              SystemNavigator.pop();
+            onTap: () async {
+              var sharedPreferences = await SharedPreferences.getInstance();
+              await sharedPreferences.clear();
+              bloc.email.clear();
+              bloc.password.clear();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  'VLogin', (Route<dynamic> route) => false);
             },
           ),
         ],
@@ -98,7 +103,7 @@ class MenuLateral extends StatelessWidget {
 
 void whatsAppOpen() async {
   var whatsappUrl =
-      'whatsapp://send?phone=+51957281730&text=Escriba mensaje para el administrador';
+      'whatsapp://send?phone=+51965380475&text=Escriba mensaje para el administrador';
   await canLaunch(whatsappUrl)
       ? launch(whatsappUrl)
       : print('no tiene whatsapp instalado');

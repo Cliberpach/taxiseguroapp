@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "475656618234",
-    "project_id": "gpstracker-5b5ef",
-    "storage_bucket": "gpstracker-5b5ef.appspot.com"
+    "project_number": "293539942572",
+    "project_id": "gpsweb-310520",
+    "storage_bucket": "gpsweb-310520.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:475656618234:android:8928ab2a7e76e07d668943",
+        "mobilesdk_app_id": "1:293539942572:android:5729666174316d0d9d4f09",
         "android_client_info": {
-          "package_name": "com.gpsaseguro.gpscliente"
+          "package_name": "com.gpsbpmsac.gpscliente"
         }
       },
       "oauth_client": [
         {
-          "client_id": "475656618234-s0lne5du869sto4i133fg0e92gpmabm8.apps.googleusercontent.com",
+          "client_id": "293539942572-r3khljin28hd9f0r5dvsh24ma4mo478f.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBqVPPCxGIPAoO1d5exiutpmIThwOf2QLc"
+          "current_key": "AIzaSyAwzEPRtXaHcNk60qIkp0tL8jn5J3yui7s"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "475656618234-s0lne5du869sto4i133fg0e92gpmabm8.apps.googleusercontent.com",
+              "client_id": "293539942572-r3khljin28hd9f0r5dvsh24ma4mo478f.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -25,6 +25,7 @@ class Vehiculo {
     this.marca,
     this.activo,
     this.estado,
+    this.estadogps,
     this.movimiento,
     this.pago,
     this.lat,
@@ -44,6 +45,7 @@ class Vehiculo {
   String marca;
   String activo;
   String estado;
+  String estadogps;
   String movimiento;
   String pago;
   String lat;
@@ -62,6 +64,7 @@ class Vehiculo {
         modelo: json['modelo'],
         marca: json['marca'],
         activo: json['activo'],
+        estadogps:json['estadogps'],
         estado: json['estado'],
         movimiento: json['movimiento'],
         pago: json['pago'],
@@ -83,6 +86,7 @@ class Vehiculo {
         'marca': marca,
         'activo': activo,
         'estado': estado,
+        'estadogps':estadogps,
         'movimiento': movimiento,
         'pago': pago,
         'lat': lat,

@@ -32,10 +32,11 @@ class Wlistvehiculos extends StatelessWidget {
                     return Builder(builder: (BuildContext context) {
                       return GestureDetector(
                         onTap: () {
-                          blocve.destinationrout =
-                              LatLng(double.parse(dispositivo.lat), double.parse(dispositivo.lng));
-                          blocve.moveCamera(double.parse(dispositivo.lat),
-                              double.parse(dispositivo.lng));
+                          // blocve.destinationrout = LatLng(
+                          //     double.parse(dispositivo.lat),
+                          //     double.parse(dispositivo.lng));
+                          // blocve.moveCamera(double.parse(dispositivo.lat),
+                          //     double.parse(dispositivo.lng));
                         },
                         child: Card(
                             child: Container(
@@ -70,10 +71,10 @@ class Wlistvehiculos extends StatelessWidget {
                                 child: Chip(
                                     labelStyle:
                                         const TextStyle(color: Colors.white),
-                                    label:
-                                        Text(dispositivo.estado.toLowerCase()),
+                                    label: Text(
+                                        dispositivo.estadogps.toLowerCase()),
                                     backgroundColor:
-                                        dispositivo.estado.toString() ==
+                                        dispositivo.estadogps.toString() ==
                                                 'Conectado'
                                             ? Colors.greenAccent
                                             : Colors.redAccent),

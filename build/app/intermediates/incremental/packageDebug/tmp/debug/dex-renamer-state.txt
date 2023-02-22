@@ -1,7 +1,7 @@
-#Mon Apr 12 18:07:36 COT 2021
-base.0=D\:\\PROYECTOS_FLUTTER\\taxiseguroapp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+#Sat Feb 04 22:22:24 PET 2023
+base.0=/Users/edwinmacalopu/PROYECT_FLUTTER/gpsbpmsac/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
 path.1=classes2.dex
 renamed.1=classes2.dex
 path.0=classes.dex
 renamed.0=classes.dex
-base.1=D\:\\PROYECTOS_FLUTTER\\taxiseguroapp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes2.dex
+base.1=/Users/edwinmacalopu/PROYECT_FLUTTER/gpsbpmsac/build/app/intermediates/dex/debug/mergeDexDebug/classes2.dex

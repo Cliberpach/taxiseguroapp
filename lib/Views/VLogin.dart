@@ -35,19 +35,6 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                        width: size.width / 3.2,
-                        child: const Image(
-                          //width: 250,
-                          image: AssetImage('assets/images/icono.png'),
-                        ),
-                        decoration:
-                            const BoxDecoration(shape: BoxShape.circle)),
-                    const SizedBox(height: 20),
-                    const Text('AseguroPeru',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18)),
-                    const SizedBox(height: 50),
                     Card(
                       color: Colors.white,
                       child: Container(
@@ -55,6 +42,20 @@ class _LoginPageState extends State<LoginPage> {
                             horizontal: 20, vertical: 30),
                         child: Column(
                           children: [
+                            Container(
+                                //width: size.width / 3.2,
+                                child: const Image(
+                                  //width: 250,
+                                  image:
+                                      AssetImage('assets/images/logoini.jpg'),
+                                ),
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle)),
+                            const SizedBox(height: 20),
+                            const Text('Iniciar sesión',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18)),
+                            const SizedBox(height: 50),
                             TextField(
                               controller: bloc.email,
                               keyboardType: TextInputType.emailAddress,
@@ -103,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     Colors.white))
                                         : const Text('INGRESAR'),
                                     style: ElevatedButton.styleFrom(
-                                      primary: Colors.orangeAccent,
+                                      primary: const Color(0xFFF38120),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10)),
@@ -172,8 +173,15 @@ class _LoginPageState extends State<LoginPage> {
 
 void whatsAppOpen() async {
   var whatsappUrl =
-      'whatsapp://send?phone=+51957281730&text=Escriba mensaje para el administrador';
-  await canLaunch(whatsappUrl)
-      ? launch(whatsappUrl)
-      : print('no tiene whatsapp instalado');
+      'whatsapp://send?phone=+51965380475&text=Escriba mensaje para el administrador';
+  // await canLaunch(whatsappUrl)
+  //     ? launch(whatsappUrl)
+  //     : print('no tiene whatsapp instalado');
+
+     // var uri = Uri.parse("https://wa.me/51965380475?text=Escriba mensaje para el administrador");
+if (await canLaunch(whatsappUrl)){
+    await launch(whatsappUrl,forceSafariVC: false);
+} else {
+    // can't launch url
+}
 }

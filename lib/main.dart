@@ -41,7 +41,7 @@ class LoginApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(primaryColor: const Color(0xff40B5C1)),
-          title: 'GPS ASEGURO',
+          title: 'gpsbmsac',
           home: VSplash(),
           routes: <String, WidgetBuilder>{
             'VLogin': (BuildContext context) => LoginPage(),
